@@ -90,6 +90,8 @@ video {
   font-size: 100%;
   font: inherit;
   vertical-align: baseline;
+  /* 단어 단위로 밑으로 떨어져 내리게 설정 */
+  word-break: keep-all;
 }
 
 /* HTML5 display-role reset for older browsers */
@@ -127,4 +129,10 @@ q:after {
 table {
   border-collapse: collapse;
   border-spacing: 0;
+}
+
+/* a태그 안에 img */
+img,
+fieldset {
+  border: 0;
 }

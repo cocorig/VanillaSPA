@@ -11,8 +11,124 @@
   --sub-txt-color: #828282;
   --button-border: #bdbdbd;
 }
+
+div,
+span,
+article,
+section,
+header,
+main,
+footer,
+p,
+ul,
+li,
+label,
+a,
+nav,
+h1,
+h2,
+h3,
+form,
+input,
+button,
+img,
+textarea,
+table,
+thead,
+tbody,
+tr,
+th,
+td {
+  box-sizing: border-box;
+}
+
 body,
 html {
   width: 100%;
   height: 100%;
+}
+
+body,
+button {
+  font-family: "Spoqa Han Sans Neo", sans-serif;
+  /* 아이폰 기본 폰트 사용 x */
+  -webkit-text-size-adjust: none;
+}
+
+body {
+  font-weight: 400;
+  color: var(--txt-color);
+}
+
+img {
+  width: 100%;
+  height: auto;
+  vertical-align: top;
+}
+
+a {
+  display: block;
+  text-decoration: none;
+  color: #000;
+}
+
+table,
+thead,
+tbody,
+tr {
+  display: block;
+}
+
+button {
+  border: none;
+  cursor: pointer;
+  padding: 0;
+}
+
+/* 한 줄 말줄임 */
+.ellipsis {
+  display: block;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+/* 여러만 말줄임 */
+.multi-ellipsis {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+}
+
+/* 접근성을 위한 숨김 텍스트 */
+.ir {
+  clip: rect(1px, 1px, 1px, 1px);
+  clip-path: inset(50%);
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+}
+
+button {
+  border: none;
+  cursor: pointer;
+  padding: 0;
+}
+
+/* styles */
+
+/* 좋아요 버튼 */
+.like-btn {
+  width: 20px;
+  height: 20px;
+  background-color: rgb(148, 243, 194);
+}
+
+/* 클릭시 on 클래스 추가 */
+.on {
+  background-color: rgb(29, 178, 74);
 }
