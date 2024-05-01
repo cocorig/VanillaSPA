@@ -14,7 +14,6 @@ export default class App {
     this.router = new Router({
       "/": ProductPage,
       "/detail:id": ProductDetail,
-      "/detail": ProductDetail,
       "/cart": Cart,
       "/order": Cart,
     });

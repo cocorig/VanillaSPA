@@ -24,8 +24,11 @@ export default class Router {
     for (const key in routes) {
       const route = routes[key];
       if (key.indexOf(":") > -1) {
-        const [_, routeName, param] = key.split("/");
-        this.routes["/" + routeName] = route;
+        // /detail:id -> /detail
+        const [routeName, param] = key.split(":");
+
+        this.routes[routeName] = route;
+        console.log(this.routes[routeName]);
         delete this.routes[key];
       }
     }
@@ -48,10 +51,12 @@ export default class Router {
 
     // 2. 클릭 이벤트를 처리
     window.addEventListener("click", (e) => {
-      if (e.target.tagName.toLowerCase() === "a") {
+      // 클릭한 요소가 a의 하위 요소일 때
+      if (e.target.closest("a")) {
         e.preventDefault();
         // 2.1 routePush: a 태그 경로를 보낸다.
-        this.routePush(e.target.href);
+        console.log(e.target.closest("a").href);
+        this.routePush(e.target.closest("a").href);
       }
     });
 
@@ -74,7 +79,7 @@ export default class Router {
    * @param {*} pathname - 라우팅할 페이지의 경로, window.location.pathname
    */
   routing(pathname) {
-    console.log(pathname);
+    console.log(pathname); // /detail/1
     const [_, routeName, param] = pathname.split("/");
     let page = "";
 
@@ -89,6 +94,7 @@ export default class Router {
     } else if (param) {
       //new ProductDetail(param)
       const component = new this.routes["/" + routeName](param);
+
       page = component.render(); // page로 받아서 root로 반환
     }
 
@@ -108,3 +114,25 @@ export default class Router {
     rootElement.appendChild(page);
   }
 }
+
+/* 
+
+a 태그를 감싼 모든 태그를 클릭하면 a의 기본 이벤트인 페이지 이동이 발생한다.
+
+  window.addEventListener("click", (e) => {
+      if (e.target.tagName.toLowerCase() === "a") {
+        e.preventDefault();
+        this.routePush(e.target.href);
+      }
+  });
+이때 다른 a태그가 포함한 요소들을 클릭하면 다른 태그를 포함한 e.target.href 경로는 파싱하지 못했기 때문에 에러가 발생한다. 반면 다른 태그가 포함하지 않은 a 태그만의 영역을 클릭하면 잘 파싱된다. 이런 문제로 링크 클릭했을 때는 closest() method를 사용해 가장 가가운 조상의 값을 요소를 반횐하는 것으로 아래와 같이 수정해야 한다.
+closest() method는 일치하는 요소를 찾을 때 까지 위쪽 (부모 방향으로) 순회한다.
+
+
+  window.addEventListener("click", (e) => {
+      if (e.target.closest("a")) {
+        e.preventDefault();
+        this.routePush(e.target.closest("a").href);
+      }
+  });
+ */
