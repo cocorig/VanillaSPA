@@ -1,19 +1,26 @@
 export default class ProductLikeButton {
-  constructor() {}
+  constructor() {
+    this.isLiked = false;
+  }
+
   render() {
     const likeButton = document.createElement("button");
-
-    likeButton.addEventListener("click", (e) => {
-      e.preventDefault();
-      e.stopPropagation(); // 버블링 중단
-      console.log("좋아요 버튼 클릭");
-    });
     likeButton.setAttribute("class", "like-btn");
-
     const likeButtonIr = document.createElement("span");
     likeButtonIr.setAttribute("class", "ir");
     likeButtonIr.innerText = "좋아요 버튼";
     likeButton.appendChild(likeButtonIr);
+
+    likeButton.addEventListener("click", (e) => {
+      e.preventDefault();
+      e.stopPropagation(); // 버블링 중단
+      this.isLiked = !this.isLiked; // 좋아요 상태 토글
+      if (this.isLiked) {
+        likeButton.classList.add("on");
+      } else {
+        likeButton.classList.remove("on");
+      }
+    });
 
     return likeButton;
   }

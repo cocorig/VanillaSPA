@@ -5,10 +5,11 @@ export default class ProductImage {
   }
 
   render() {
-    // 이미지
     const productImageContainer = document.createElement("div");
-    productImageContainer.setAttribute("class", "product-img");
+    productImageContainer.setAttribute("class", "img-container");
+
     const productImage = document.createElement("img");
+    productImage.setAttribute("class", "product-img");
     productImage.setAttribute(
       "src",
       `https://test.api.weniv.co.kr/${this.thumbnailImg}`

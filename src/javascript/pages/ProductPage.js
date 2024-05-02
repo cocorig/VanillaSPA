@@ -1,10 +1,12 @@
 import { ProductCard } from "../components/ProductCard/index.js";
+import { CartButton } from "../components/Button/index.js";
+import { Ir } from "../utils/index.js";
 export default class ProductPage {
   constructor() {
     this.mainElement = document.createElement("main");
+    this.mainElement.setAttribute("id", "wrap");
     this.product = {};
   }
-
   //  전체 상품 정보 가져오기
   async getProductData() {
     const response = await fetch("https://test.api.weniv.co.kr/mall");
@@ -15,15 +17,22 @@ export default class ProductPage {
   // 상품 리스트 세팅하기 , 여기서 main 요소에 뿌려주는 작업을 할 것
   async setProductList() {
     await this.getProductData();
-    this.mainElement.classList.add("product");
-    const productPageHeader = document.createElement("h1");
-    productPageHeader.setAttribute("class", "a11y-hidden");
+    const cartButton = new CartButton().render();
+
+    // 전체 productWrap
+    const productWrap = document.createElement("section");
+    productWrap.setAttribute("id", "container");
+    const productPageIr = new Ir({
+      tag: "h1",
+      text: "전체 상품 페이지",
+    }).createElement();
 
     // productList를 표시할 요소 ul
     const productList = document.createElement("ul");
     productList.setAttribute("class", "product-list");
+    productWrap.appendChild(productList);
 
-    this.mainElement.appendChild(productPageHeader);
+    this.mainElement.appendChild(productPageIr);
 
     // 각 product 순회
     this.product.forEach((item) => {
@@ -33,7 +42,8 @@ export default class ProductPage {
       productItem.appendChild(productCard.render());
       productList.append(productItem);
     });
-    this.mainElement.appendChild(productList);
+    productWrap.appendChild(cartButton);
+    this.mainElement.appendChild(productWrap);
   }
 
   render() {
