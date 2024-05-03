@@ -11,7 +11,7 @@ export default class ProductCard {
   render() {
     const { id, productName, price, thumbnailImg, discountRate, stockCount } =
       this.item;
-    console.log(this.item);
+    // console.log(this.item);
     // 전체 a 태그
     const product = document.createElement("a");
     product.setAttribute("href", `/detail/${id}`);
@@ -28,7 +28,7 @@ export default class ProductCard {
       size: "m",
     }).render();
 
-    const productLikeButton = new ProductLikeButton().render();
+    const productLikeButton = new ProductLikeButton(id).render();
 
     product.appendChild(productImage);
     product.appendChild(productNames);
