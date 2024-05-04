@@ -1,24 +1,26 @@
-// https://test.api.weniv.co.kr/mall/:id
+import { getProductIdData } from "../api/product.js";
 
 export default class ProductDetail {
   // parma을 보고 id를 가져와야 함
   constructor(id) {
-    console.log(id);
     this.id = id;
+    console.log(this.id);
+    this.data = [];
+  }
+
+  // 상품 세팅하기
+  async setDetailProduct() {
+    this.data = await getProductIdData(this.id);
+    console.log(this.data);
   }
 
   render() {
-    const container = document.createElement("div");
-    const element = document.createElement("h1");
-    element.innerText = `${this.id}상품상세 페이지`;
+    this.setDetailProduct();
 
-    const anchor = document.createElement("a");
-    anchor.href = "/";
-    anchor.innerText = "상품목록 페이지 이동";
+    const a = document.createElement("a");
+    a.setAttribute("href", "./detail/2");
+    a.innerText = "라우터 테스트";
 
-    container.appendChild(anchor);
-    container.appendChild(element);
-
-    return container;
+    return a;
   }
 }
