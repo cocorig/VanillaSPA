@@ -1,10 +1,9 @@
 import { Router } from "./utils/index.js";
 import { ProductDetail, ProductPage, Cart } from "./pages/index.js";
-export default class App {
-  constructor(props) {
-    // config를 props로 받아서 rootElement에 렌더링
-    this.props = props;
-  }
+import { Component } from "./core/index.js";
+
+export default class App extends Component {
+  // config를 props로 받아서 rootElement에 렌더링
 
   async setup() {
     const { el } = this.props;

@@ -1,14 +1,14 @@
-export default class ProductName {
-  constructor({ productName, size }) {
-    this.productName = productName;
-    this.size = size;
-  }
-
+import { Component } from "../../core/index.js";
+export default class ProductName extends Component {
+  // constructor(props) { 이렇게 받으면 사용가능 , 생략가능!!
+  //   console.log(props);
+  //   super(props); 상속자의 클래스를 실행
+  // }
   render() {
-    // 상품 이름
+    const { productName, size } = this.props;
     const productsName = document.createElement("strong");
-    productsName.setAttribute("class", `ellipsis ${this.size}-product-name`);
-    productsName.innerText = this.productName;
+    productsName.setAttribute("class", `ellipsis ${size}-product-name`);
+    productsName.innerText = productName;
 
     return productsName;
   }

@@ -1,9 +1,9 @@
 import { Ir } from "../../utils/index.js";
-
-export default class ProductLikeButton {
+import { Component } from "../../core/index.js";
+export default class ProductLikeButton extends Component {
   // 상품의 id를 받아서 true인지, false인지
-  constructor(id) {
-    this.productId = id;
+  constructor(props) {
+    super(props);
     this.isLiked = this.checkLikeList(); // 로컬스토리지의 반환값으로 초기 세팅
   }
 
@@ -16,7 +16,7 @@ export default class ProductLikeButton {
     // 이미 있는 경우 해당 아이디가 이 배열에 있는지 확인하기위해 likeList 값을 가져온다.
     const likeList = JSON.parse(localStorage.getItem("likeList"));
     // 콘솔로 배열로 나타나지만 실제론 문자열 타입이므로 parse해줘야 함
-    return likeList.includes(this.productId);
+    return likeList.includes(this.props.productId);
   }
 
   addEventListener(likeButton) {
@@ -27,10 +27,10 @@ export default class ProductLikeButton {
       const likeList = JSON.parse(localStorage.getItem("likeList"));
       this.isLiked = !this.isLiked;
 
-      this.isLiked && likeList.push(this.productId);
+      this.isLiked && likeList.push(this.props.productId);
       const newLikeList = this.isLiked
         ? likeList
-        : likeList.filter((item) => this.productId !== item);
+        : likeList.filter((item) => this.props.productId !== item);
       localStorage.setItem("likeList", JSON.stringify(newLikeList));
 
       this.isLiked

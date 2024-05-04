@@ -1,11 +1,6 @@
 import { Ir } from "../../utils/index.js";
-
-export default class ProductPrice {
-  constructor({ price, discountRate, size }) {
-    this.price = price;
-    this.discountRate = discountRate;
-    this.size = size;
-  }
+import { Component } from "../../core/index.js";
+export default class ProductPrice extends Component {
   // 할인율 계산
   calculateDiscountedPrice(price, discountRate) {
     return discountRate ? (price * (100 - discountRate)) / 100 : price;
@@ -17,25 +12,23 @@ export default class ProductPrice {
   }
 
   render() {
+    const { price, discountRate, size } = this.props;
     const productPriceContainer = document.createElement("div");
     productPriceContainer.setAttribute("class", "product-price");
-
-    // 가격 계산
-    const price = this.calculateDiscountedPrice(this.price, this.discountRate);
-
     const priceType = document.createElement("span");
     priceType.innerText = "원";
 
     // 가격 표시
     const productPrice = document.createElement("strong");
-    productPrice.setAttribute("class", `price ${this.size}-price`);
-    productPrice.innerText = this.formatPrice(price);
-    productPrice.appendChild(priceType);
-
+    productPrice.setAttribute("class", `price ${size}-price`);
     productPriceContainer.appendChild(productPrice);
 
+    let displayedPrice = price;
+
     // 할인율이 있는 경우
-    if (this.discountRate) {
+    if (discountRate) {
+      displayedPrice = this.calculateDiscountedPrice(price, discountRate);
+
       const priceIr = new Ir({
         tag: "span",
         text: "할인 전 가격",
@@ -49,7 +42,7 @@ export default class ProductPrice {
       const originalPriceDel = document.createElement("del");
       originalPriceDel.setAttribute("class", "del-price");
       const originalPrice = document.createElement("span");
-      originalPrice.innerText = this.formatPrice(this.price);
+      originalPrice.innerText = this.formatPrice(price);
       originalPriceDel.append(
         originalPrice,
         priceType.cloneNode(true),
@@ -59,12 +52,14 @@ export default class ProductPrice {
       // 할인율 %
       const discountRateElement = document.createElement("strong");
       discountRateElement.setAttribute("class", "price percent-price");
-      discountRateElement.innerText = `${this.discountRate}%`;
+      discountRateElement.innerText = `${discountRate}%`;
       discountRateElement.appendChild(discountIr);
 
       productPriceContainer.appendChild(originalPriceDel);
       productPriceContainer.appendChild(discountRateElement);
     }
+    productPrice.innerText = this.formatPrice(displayedPrice);
+    productPrice.appendChild(priceType);
 
     return productPriceContainer;
   }

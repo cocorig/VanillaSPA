@@ -1,10 +1,8 @@
-export default class ProductImage {
-  constructor({ thumbnailImg, productName }) {
-    this.thumbnailImg = thumbnailImg;
-    this.productName = productName;
-  }
+import { Component } from "../../core/index.js";
 
+export default class ProductImage extends Component {
   render() {
+    const { thumbnailImg, productName } = this.props;
     const productImageContainer = document.createElement("div");
     productImageContainer.setAttribute("class", "img-container");
 
@@ -12,9 +10,9 @@ export default class ProductImage {
     productImage.setAttribute("class", "product-img");
     productImage.setAttribute(
       "src",
-      `https://test.api.weniv.co.kr/${this.thumbnailImg}`
+      `https://test.api.weniv.co.kr/${thumbnailImg}`
     );
-    productImage.setAttribute("alt", `${this.productName}`);
+    productImage.setAttribute("alt", `${productName}`);
     productImageContainer.appendChild(productImage);
 
     return productImageContainer;
