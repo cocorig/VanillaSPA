@@ -1,14 +1,33 @@
 export default class Component {
-  // 각각의 컴포넌트에서 사용할 속성들을 하나의 객체로 받는 역할로 지정함
   constructor(props) {
     this.props = props;
     this.state = {};
+    this.lastRendered = null;
+    this.setup();
+  }
+
+  setup() {
+    const rendered = this.render();
+    this.lastRendered = rendered;
+    return rendered;
   }
 
   setState(newState) {
     this.state = { ...this.state, ...newState };
-    this.render();
+    this.updater();
   }
-  //  필요한 요소만들고 컴포넌트를 생성,렌더링,조작하는 역할
+
+  updater() {
+    const rendered = this.render();
+    this.lastRendered.replaceWith(rendered);
+    this.lastRendered = rendered;
+  }
+  addEvent(eventType, selector, callback) {
+    selector.addEventListener(eventType, (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+      callback(event);
+    });
+  }
   render() {}
 }
