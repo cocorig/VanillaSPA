@@ -1,49 +1,40 @@
 import { Ir } from "../../utils/index.js";
-import { Component } from "../../core/index.js";
+import Component from "../../core/Component.js";
+
 export default class ProductLikeButton extends Component {
-  // 상품의 id를 받아서 true인지, false인지
   constructor(props) {
     super(props);
-    this.isLiked = this.checkLikeList(); // 로컬스토리지의 반환값으로 초기 세팅
+    this.state = {
+      liked: this.checkLikeList(),
+    };
   }
 
-  // 현재 제품 id가 좋아요 목록에 있는지 확인
   checkLikeList() {
-    // 로컬스토리지에  초기 likeList 배열 설정
     if (!localStorage.getItem("likeList")) {
       localStorage.setItem("likeList", JSON.stringify([]));
     }
-    // 이미 있는 경우 해당 아이디가 이 배열에 있는지 확인하기위해 likeList 값을 가져온다.
     const likeList = JSON.parse(localStorage.getItem("likeList"));
-    // 콘솔로 배열로 나타나지만 실제론 문자열 타입이므로 parse해줘야 함
     return likeList.includes(this.props.productId);
   }
 
-  addEventListener(likeButton) {
-    likeButton.addEventListener("click", (e) => {
-      e.preventDefault();
-      e.stopPropagation(); // 버블링 중단
+  changeLiked() {
+    const likeList = JSON.parse(localStorage.getItem("likeList"));
 
-      const likeList = JSON.parse(localStorage.getItem("likeList"));
-      this.isLiked = !this.isLiked;
+    const updatedList = this.checkLikeList()
+      ? likeList.filter((id) => id !== this.props.productId)
+      : [...likeList, this.props.productId];
 
-      this.isLiked && likeList.push(this.props.productId);
-      const newLikeList = this.isLiked
-        ? likeList
-        : likeList.filter((item) => this.props.productId !== item);
-      localStorage.setItem("likeList", JSON.stringify(newLikeList));
+    localStorage.setItem("likeList", JSON.stringify(updatedList));
 
-      this.isLiked
-        ? e.target.classList.add("on")
-        : e.target.classList.remove("on");
-    });
+    this.setState({ liked: this.checkLikeList() });
+    console.log(this.checkLikeList());
   }
 
   render() {
     const likeButton = document.createElement("button");
     likeButton.setAttribute("class", "like-btn");
 
-    this.isLiked && likeButton.classList.add("on");
+    this.state.liked && likeButton.classList.add("on");
 
     const likeButtonIr = new Ir({
       tag: "span",
@@ -51,11 +42,13 @@ export default class ProductLikeButton extends Component {
     }).createElement();
 
     likeButton.appendChild(likeButtonIr);
-    this.addEventListener(likeButton);
+
+    this.addEvent("click", likeButton, () => this.changeLiked());
 
     return likeButton;
   }
 }
+
 /*
       e.preventDefault();  html 기본동작, 새로고침 ,submit 동작을 막는다.
       e.stopPropagation();  기본 동작 외 이벤트의 전파를 막는다. 클릭했을 때 url이 이동하지 않도록 버블링 중단

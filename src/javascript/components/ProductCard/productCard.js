@@ -29,7 +29,9 @@ export default class ProductCard extends Component {
       size: "m",
     }).render();
 
-    const productLikeButton = new ProductLikeButton({ productId: id }).render();
+    const productLikeButton = new ProductLikeButton({
+      productId: id,
+    }).setup();
 
     product.appendChild(productImage);
     product.appendChild(productNames);
