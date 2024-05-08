@@ -127,52 +127,77 @@ button {
 /* 상품 목록 페이지 시작*/
 
 /* 레이아웃 */
+
 #wrap {
-  position: relative;
-  min-width: 1920px;
+  display: flex;
+  justify-content: center;
+  margin-top: 160px;
+  padding-bottom: 156px;
 }
-#container {
-  margin: 160px auto;
-  width: 1260px;
-}
+
 /* ul */
 .product-list {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
   gap: 60px;
+  width: 1260px;
 }
 
 /* li */
 .product-item {
   position: relative;
-  width: 380px;
 }
 
 /* a */
 .product {
   position: relative;
   display: block;
+  width: 380px;
 }
 
-/* 이미지 스타일 */
+/* 이미지 스타일 (img를 감싸고 있는 div)*/
 .img-container {
-  display: inline-block;
-  border: 1px solid var(--button-border);
+  position: relative;
+  width: 380px;
+  height: 380px;
+  border: 1px solid var(--border-color);
   border-radius: 10px;
   overflow: hidden;
-  vertical-align: top;
 }
-
-.product-img {
+/* 품절 상품일 경우 .product-item에 .sold-out 추가 -> 이미지 div에 스타일 추가 */
+.product-item.sold-out .img-container::before {
+  position: absolute;
+  content: "";
+  left: 0;
+  top: 0;
   width: 100%;
   height: 100%;
-  aspect-ratio: 1;
-  object-fit: cover;
-  z-index: 1;
+  background-color: rgba(0, 0, 0, 0.3);
 }
+.product-item.sold-out .img-container::after {
+  position: absolute;
+  content: "SOLDOUT";
+  width: 300px;
+  background-color: var(--txt-color);
+  border-radius: 5px;
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 18px;
+  color: var(--bg-color);
+  text-align: center;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 30px;
+  padding: 11px 0;
+}
+/* 상품 이름 스타일 */
 
-/* product 이름 */
+/* 공통 */
+.m-product-name,
+.l-product-name {
+  line-height: 22px;
+}
+/* medium 사이즈 */
 .m-product-name {
   display: block;
   color: var(--txt-color);
@@ -180,12 +205,13 @@ button {
   padding-right: 22px;
   margin-top: 20px;
 }
+/* large 사이즈 */
 .l-product-name {
   color: var(--txt-color);
   font-size: 24px;
 }
 
-/* 가격 스타일 시작 */
+/* 상품 가격 스타일 */
 
 /* 전체 가격 컨테이너 */
 .product-price {
@@ -203,37 +229,56 @@ button {
 .price span {
   font-weight: 400;
 }
+
+/* medium 사이즈 */
 .m-price {
+  font-weight: 700;
   font-size: 24px;
+  line-height: 30px;
+  /* font-size: 24px;
   display: flex;
   align-items: center;
   gap: 2px;
+  line-height: 30px; */
 }
 .m-price span {
+  font-weight: 400;
   font-size: 16px;
+  line-height: 20px;
+  margin-left: 2px;
+  /* font-size: 16px;
+  line-height: 20px; */
 }
+
+/* large 사이즈 */
 .l-price {
-  font-weight: bold;
+  font-weight: 700;
   font-size: 36px;
+  line-height: 45px;
   color: var(--emphasis-txt-color);
 }
 .l-price span {
+  font-weight: 400;
   font-size: 18px;
+  line-height: 23px;
+  margin-left: 2px;
 }
 
+/* 상품 원가 스타일 */
 .del-price {
   color: var(--sub-txt-color);
   font-size: 16px;
   font-weight: 400;
 }
+/* 할인율 스타일 */
 .percent-price {
   color: var(--main-color);
+  font-weight: 700;
   font-size: 16px;
+  line-height: 20px;
 }
 
-/* 가격 스타일 끝 */
-
-/* 버튼 스타일 시작*/
+/* 버튼 스타일 */
 
 .m-button-fill,
 .m-button-fff,
@@ -264,11 +309,10 @@ button {
   right: 190px;
   width: 80px;
   height: 80px;
-  background: url("../assets/icon-shopping-cart-white.svg") center/cover
-    no-repeat;
-  background-size: 40px 40px;
   border-radius: 50%;
   background-color: var(--main-color);
+  background: var(--main-color) url(../assets/icon-shopping-cart-white.svg)
+    no-repeat center / 40px 40px;
 }
 /* 좋아요 버튼 */
 .like-btn {
@@ -284,13 +328,4 @@ button {
 /* 클릭시 on 클래스 추가 */
 .on {
   background: url("../assets/icon-heart-on.svg") center/cover no-repeat;
-}
-.amount {
-}
-
-/* sold-out */
-.sold-out {
-  background-color: red;
-  z-index: 10;
-  position: relative;
 }
