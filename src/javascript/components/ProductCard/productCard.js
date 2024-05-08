@@ -9,7 +9,7 @@ import { Component } from "../../core/index.js";
 export default class ProductCard extends Component {
   render() {
     const { id, productName, price, thumbnailImg, discountRate } = this.props;
-    // console.log(this.item);
+
     // 전체 a 태그
     const product = document.createElement("a");
     product.setAttribute("href", `/detail/${id}`);

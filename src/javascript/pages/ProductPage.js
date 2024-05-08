@@ -1,49 +1,48 @@
 import { getProductData } from "../api/product.js";
 import { ProductCard } from "../components/ProductCard/index.js";
-import { CartButton } from "../components/Button/index.js";
 import { Ir } from "../utils/index.js";
+import { Component } from "../core/index.js";
 
-export default class ProductPage {
-  constructor() {
-    this.mainElement = document.createElement("main");
-    this.mainElement.setAttribute("id", "wrap");
-    this.product = {};
+export default class ProductPage extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      products: [],
+    };
+    this.getProductList();
   }
 
-  // 상품 리스트 세팅하기 , 여기서 main 요소에 뿌려주는 작업을 할 것
-  async setProductList() {
-    this.product = await getProductData();
-    const cartButton = new CartButton().render();
+  async getProductList() {
+    const item = await getProductData();
+    this.setState({ products: item });
+  }
 
-    // 전체 productWrap
-    const productWrap = document.createElement("section");
-    productWrap.setAttribute("id", "container");
+  render() {
+    const { products } = this.state;
+    const mainElement = document.createElement("main");
+    mainElement.setAttribute("id", "wrap");
+
     const productPageIr = new Ir({
       tag: "h1",
       text: "전체 상품 페이지",
     }).createElement();
+    mainElement.appendChild(productPageIr);
 
-    // productList를 표시할 요소 ul
     const productList = document.createElement("ul");
     productList.setAttribute("class", "product-list");
-    productWrap.appendChild(productList);
 
-    this.mainElement.appendChild(productPageIr);
-
-    // 각 product 순회
-    this.product.forEach((item) => {
+    products.forEach((item) => {
       const productItem = document.createElement("li");
       productItem.setAttribute("class", "product-item");
+      if (item.stockCount < 1) {
+        productItem.classList.add("sold-out");
+      }
       const productCard = new ProductCard(item);
+
       productItem.appendChild(productCard.render());
       productList.append(productItem);
     });
-    // productWrap.appendChild(cartButton);
-    this.mainElement.appendChild(productWrap);
-  }
-
-  render() {
-    this.setProductList();
-    return this.mainElement;
+    mainElement.appendChild(productList);
+    return mainElement;
   }
 }
