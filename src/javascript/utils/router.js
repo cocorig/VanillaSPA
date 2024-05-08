@@ -19,16 +19,16 @@ export default class Router {
       console.error("can not initialize routes, need routes!");
     }
     this.routes = routes;
-
+    this.routeParam = {};
     // 동적 경로를 처리
     for (const key in routes) {
       const route = routes[key];
       if (key.indexOf(":") > -1) {
-        // /detail:id -> /detail
         const [routeName, param] = key.split(":");
-
+        console.log(routeName, param);
+        this.routeParam[routeName] = param;
+        console.log(this.routeParam);
         this.routes[routeName] = route;
-        console.log(this.routes[routeName]);
         delete this.routes[key];
       }
     }
@@ -70,7 +70,7 @@ export default class Router {
    */
   routePush(pathname) {
     window.history.pushState({}, null, pathname);
-    this.routing(window.location.pathname); // ** a태그를 눌렀을 때 실행되기 때문에 routing에 현재 경로를 보내줘야 경로에 맞는 페이지가 반환된다
+    this.routing(window.location.pathname);
   }
 
   /**
@@ -82,23 +82,17 @@ export default class Router {
     console.log(pathname); // /detail/1
     const [_, routeName, param] = pathname.split("/");
     let page = "";
-
-    // 설정한 경로가 있는지 확인하고 해당 페이지를 가져와서 렌더링
+    console.log(routeName);
     if (this.routes[pathname]) {
-      // 설정한 경로가 있는지 확인
-      //  const component =  new ProductPage
       const component = new this.routes[pathname]();
-      page = component.render(); // page로 받아서 root로 반환
-
-      // 동적인 경로의 경우 해당하는 param을 가져와서 페이지 렌더링
+      page = component.setup();
     } else if (param) {
-      //new ProductDetail(param)
-      const component = new this.routes["/" + routeName](param);
-
-      page = component.render(); // page로 받아서 root로 반환
+      // param id를 {id : 2} 객체 형태로 넣어주기 위해서 this.routeParam객체를 이용
+      const routeParam = {};
+      routeParam[this.routeParam["/" + routeName]] = param;
+      const component = new this.routes["/" + routeName](routeParam);
+      page = component.setup();
     }
-
-    // page가 있을 때 Router render에 page를 보냄
     if (page) {
       this.render(page);
     }
@@ -135,4 +129,6 @@ closest() method는 일치하는 요소를 찾을 때 까지 위쪽 (부모 방�
         this.routePush(e.target.closest("a").href);
       }
   });
+
+  https://developer.mozilla.org/en-US/docs/Web/API/Element/closest
  */
