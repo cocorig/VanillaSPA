@@ -1,10 +1,11 @@
 import { getProductIdData } from "../api/product.js";
 import { Component } from "../core/index.js";
-
+import { ProductInfo } from "../components/Product/index.js";
+import { Ir } from "../utils/index.js";
 export default class ProductDetail extends Component {
   constructor(props) {
     super(props);
-    console.log(props); //{id: '1'}
+    console.log(props); // {id: '1'}
     this.state = {
       product: [],
     };
@@ -16,10 +17,24 @@ export default class ProductDetail extends Component {
   }
 
   render() {
-    const a = document.createElement("a");
-    a.setAttribute("href", "./detail/2");
-    a.innerText = "라우터 테스트";
+    console.log(this.state.product);
+    const { modDate, stockCount } = this.state.product;
+    const ProductModal = document.createElement("article");
+    ProductModal.setAttribute("class", "productModal");
+    const productDetailPagIr = new Ir({
+      tag: "h1",
+      text: "전체 상세 페이지",
+    }).createElement();
+    ProductModal.appendChild(productDetailPagIr);
 
-    return a;
+    if (modDate && stockCount !== undefined) {
+      const productInfo = new ProductInfo({
+        modDate,
+        stockCount,
+      }).render();
+      ProductModal.appendChild(productInfo);
+    }
+
+    return ProductModal;
   }
 }

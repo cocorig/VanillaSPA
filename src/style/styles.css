@@ -72,13 +72,6 @@ a {
   color: #000;
 }
 
-table,
-thead,
-tbody,
-tr {
-  display: block;
-}
-
 button {
   border: none;
   cursor: pointer;
@@ -328,4 +321,46 @@ button {
 /* 클릭시 on 클래스 추가 */
 .on {
   background: url("../assets/icon-heart-on.svg") center/cover no-repeat;
+}
+
+/* 상품 디테일 페이지 */
+
+.productModal {
+  width: 990px;
+  margin: 0 auto;
+  padding: 60px;
+}
+/* 상품 정보 */
+.product-info {
+  font-size: 14px;
+  line-height: 18px;
+  color: var(--txt-color);
+  margin: 40px 0;
+}
+.product-info table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+.product-info-title {
+  font-size: 16px;
+  font-weight: 500;
+  color: inherit;
+  margin-bottom: 16px;
+  display: block;
+}
+.product-info-label,
+.product-info-value {
+  padding: 13px 12px;
+  border: solid var(--sub-border-color);
+  border-width: 2px 0;
+  text-align: left;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  color: inherit;
+}
+.product-info-label {
+  width: 150px;
+  background-color: #f2f2f2;
+  font-weight: 400;
 }
