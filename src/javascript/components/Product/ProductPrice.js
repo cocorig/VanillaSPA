@@ -1,5 +1,5 @@
 import { Ir } from "../../utils/index.js";
-import { Component } from "../../core/index.js";
+import { Component, createComponent } from "../../core/index.js";
 export default class ProductPrice extends Component {
   // 할인율 계산
   calculateDiscountedPrice(price, discountRate) {
@@ -29,14 +29,15 @@ export default class ProductPrice extends Component {
     if (discountRate) {
       displayedPrice = this.calculateDiscountedPrice(price, discountRate);
 
-      const priceIr = new Ir({
+      const priceIr = createComponent(Ir, {
         tag: "span",
         text: "할인 전 가격",
-      }).createElement();
-      const discountIr = new Ir({
+      });
+
+      const discountIr = createComponent(Ir, {
         tag: "span",
         text: "할인",
-      }).createElement();
+      });
 
       // 원래 가격 표시 (del 태그 사용)
       const originalPriceDel = document.createElement("del");
@@ -55,8 +56,7 @@ export default class ProductPrice extends Component {
       discountRateElement.innerText = `${discountRate}%`;
       discountRateElement.appendChild(discountIr);
 
-      productPriceContainer.appendChild(originalPriceDel);
-      productPriceContainer.appendChild(discountRateElement);
+      productPriceContainer.append(originalPriceDel, discountRateElement);
     }
     productPrice.innerText = this.formatPrice(displayedPrice);
     productPrice.appendChild(priceType);

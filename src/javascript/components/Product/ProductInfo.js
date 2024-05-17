@@ -7,7 +7,6 @@ export default class ProductInfo extends Component {
 
   render() {
     const { modDate, stockCount } = this.props;
-
     const formattedProductNumber = this.formatProductNumber(modDate);
     const formattedStockCount = stockCount === 0 ? "-" : `${stockCount}개`;
 
@@ -44,11 +43,9 @@ export default class ProductInfo extends Component {
     });
 
     productInfoTbody.appendChild(productInfoTr);
-
     productInfoTable.appendChild(productInfoTbody);
 
-    productInfo.appendChild(productInfoTitle);
-    productInfo.appendChild(productInfoTable);
+    productInfo.append(productInfoTitle, productInfoTable);
 
     return productInfo;
   }

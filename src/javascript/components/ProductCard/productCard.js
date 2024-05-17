@@ -4,7 +4,7 @@ import {
   ProductName,
   ProductLikeButton,
 } from "../Product/index.js";
-import { Component } from "../../core/index.js";
+import { Component, createComponent } from "../../core/index.js";
 
 export default class ProductCard extends Component {
   render() {
@@ -15,28 +15,26 @@ export default class ProductCard extends Component {
     product.setAttribute("href", `/detail/${id}`);
     product.setAttribute("class", "product");
 
-    const productImage = new ProductImage({
+    const productImage = createComponent(ProductImage, {
       thumbnailImg,
       productName,
-    }).render();
-    const productNames = new ProductName({
+    });
+
+    const productNames = createComponent(ProductName, {
       productName,
       size: "m",
-    }).render();
-    const productPrice = new ProductPrice({
+    });
+    const productPrice = createComponent(ProductPrice, {
       price,
       discountRate,
       size: "m",
-    }).render();
+    });
 
-    const productLikeButton = new ProductLikeButton({
+    const productLikeButton = createComponent(ProductLikeButton, {
       productId: id,
-    }).setup();
+    });
 
-    product.appendChild(productImage);
-    product.appendChild(productNames);
-    product.appendChild(productPrice);
-    product.appendChild(productLikeButton);
+    product.append(productImage, productNames, productPrice, productLikeButton);
 
     return product;
   }

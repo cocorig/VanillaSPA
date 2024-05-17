@@ -1,7 +1,7 @@
 import { getProductData } from "../api/product.js";
 import { ProductCard } from "../components/ProductCard/index.js";
 import { Ir } from "../utils/index.js";
-import { Component } from "../core/index.js";
+import { Component, createComponent } from "../core/index.js";
 
 export default class ProductPage extends Component {
   constructor(props) {
@@ -22,11 +22,10 @@ export default class ProductPage extends Component {
     const mainElement = document.createElement("main");
     mainElement.setAttribute("id", "wrap");
 
-    const productPageIr = new Ir({
+    const productPageIr = createComponent(Ir, {
       tag: "h1",
       text: "전체 상품 페이지",
-    }).createElement();
-    mainElement.appendChild(productPageIr);
+    });
 
     const productList = document.createElement("ul");
     productList.setAttribute("class", "product-list");
@@ -37,12 +36,13 @@ export default class ProductPage extends Component {
       if (item.stockCount < 1) {
         productItem.classList.add("sold-out");
       }
-      const productCard = new ProductCard(item);
-
-      productItem.appendChild(productCard.render());
-      productList.append(productItem);
+      const productCard = createComponent(ProductCard, item);
+      productItem.appendChild(productCard);
+      productList.appendChild(productItem);
     });
-    mainElement.appendChild(productList);
+
+    mainElement.append(productPageIr, productList);
+
     return mainElement;
   }
 }

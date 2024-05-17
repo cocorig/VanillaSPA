@@ -1,5 +1,5 @@
 import { Ir } from "../../utils/index.js";
-import Component from "../../core/Component.js";
+import { Component, createComponent } from "../../core/index.js";
 
 export default class ProductLikeButton extends Component {
   constructor(props) {
@@ -27,20 +27,18 @@ export default class ProductLikeButton extends Component {
     localStorage.setItem("likeList", JSON.stringify(updatedList));
 
     this.setState({ liked: this.checkLikeList() });
-    console.log(this.checkLikeList());
   }
 
   render() {
     const likeButton = document.createElement("button");
-    likeButton.setAttribute("class", "like-btn");
+    likeButton.setAttribute("class", "like-button");
 
     this.state.liked && likeButton.classList.add("on");
 
-    const likeButtonIr = new Ir({
+    const likeButtonIr = createComponent(Ir, {
       tag: "span",
       text: "좋아요 버튼",
-    }).createElement();
-
+    });
     likeButton.appendChild(likeButtonIr);
 
     this.addEvent("click", likeButton, () => this.changeLiked());

@@ -1,5 +1,5 @@
 import { getProductIdData } from "../api/product.js";
-import { Component } from "../core/index.js";
+import { Component, createComponent } from "../core/index.js";
 import { Ir } from "../utils/index.js";
 import {
   ProductBasicInfo,
@@ -26,7 +26,7 @@ export default class ProductDetail extends Component {
     const productDetailPagIr = new Ir({
       tag: "h1",
       text: "상품 상세 페이지",
-    }).createElement();
+    }).render();
 
     const contentWrap = document.createElement("div");
     contentWrap.setAttribute("class", "content-wrap");
@@ -34,14 +34,18 @@ export default class ProductDetail extends Component {
     // 여기서 데이터를 받아오면 props로 보내기 위해 처리
     if (this.state.isLoaded) {
       // 기본정보
-      const productBasicInfo = new ProductBasicInfo({
+      // const productBasicInfo = new ProductBasicInfo({
+      //   product: this.state.product,
+      // });
+
+      const productBasicInfo = createComponent(ProductBasicInfo, {
         product: this.state.product,
       });
       // 상세정보
-      const productDetailInfo = new ProductDetailInfo({
+      const productDetailInfo = createComponent(ProductDetailInfo, {
         product: this.state.product,
       });
-      contentWrap.append(productBasicInfo.setup(), productDetailInfo.setup());
+      contentWrap.append(productBasicInfo, productDetailInfo);
     }
 
     container.append(productDetailPagIr, contentWrap);

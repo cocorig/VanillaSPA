@@ -1,3 +1,4 @@
+import { createComponent } from "../core/index.js";
 /**
  * @description 설정한 url 경로에 따라 해당하는 페이지를 렌더링하는 역할을 수행
  * @properties {routes} url 경로에와 해당하는 페이지 클래스를 매핑한 객체
@@ -25,14 +26,11 @@ export default class Router {
       const route = routes[key];
       if (key.indexOf(":") > -1) {
         const [routeName, param] = key.split(":");
-        console.log(routeName, param);
         this.routeParam[routeName] = param;
-        console.log(this.routeParam);
         this.routes[routeName] = route;
         delete this.routes[key];
       }
     }
-    console.log(this.routes);
   }
 
   /**
@@ -51,12 +49,10 @@ export default class Router {
 
     // 2. 클릭 이벤트를 처리
     window.addEventListener("click", (e) => {
-      // 클릭한 요소가 a의 하위 요소일 때
-      if (e.target.closest("a")) {
+      const anchor = e.target.closest("a");
+      if (anchor) {
         e.preventDefault();
-        // 2.1 routePush: a 태그 경로를 보낸다.
-        console.log(e.target.closest("a").href);
-        this.routePush(e.target.closest("a").href);
+        this.routePush(anchor.href);
       }
     });
 
@@ -79,19 +75,15 @@ export default class Router {
    * @param {*} pathname - 라우팅할 페이지의 경로, window.location.pathname
    */
   routing(pathname) {
-    console.log(pathname); // /detail/1
     const [_, routeName, param] = pathname.split("/");
-    let page = "";
-    console.log(routeName);
+    let page = "null";
+
     if (this.routes[pathname]) {
-      const component = new this.routes[pathname]();
-      page = component.setup();
+      page = createComponent(this.routes[pathname]);
     } else if (param) {
       // param id를 {id : 2} 객체 형태로 넣어주기 위해서 this.routeParam객체를 이용
-      const routeParam = {};
-      routeParam[this.routeParam["/" + routeName]] = param;
-      const component = new this.routes["/" + routeName](routeParam);
-      page = component.setup();
+      const routeParam = { [this.routeParam[`/${routeName}`]]: param };
+      page = createComponent(this.routes["/" + routeName], routeParam);
     }
     if (page) {
       this.render(page);

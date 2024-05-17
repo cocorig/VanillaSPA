@@ -1,4 +1,4 @@
-import { Component } from "../../core/index.js";
+import { Component, createComponent } from "../../core/index.js";
 import { Ir } from "../../utils/index.js";
 import { ProductInfo } from "../Product/index.js";
 
@@ -13,18 +13,14 @@ export default class productDetailInfo extends Component {
     const detailInfoSection = document.createElement("section");
     detailInfoSection.setAttribute("class", "product-detail-info");
 
-    const sectionIr = new Ir({
+    const DetailInfoIr = createComponent(Ir, {
       tag: "h2",
       text: "상품 상세 정보",
-    }).createElement();
+    });
 
     // 상품 정보 (번호,재고수량)
-    const productInfo = new ProductInfo({
-      modDate,
-      stockCount,
-    }).setup();
-    detailInfoSection.appendChild(productInfo);
 
+    const productInfo = createComponent(ProductInfo, { modDate, stockCount });
     // 상품 상세 이미지
     const productContent = document.createElement("div");
     productContent.setAttribute("class", "product-content");
@@ -38,7 +34,7 @@ export default class productDetailInfo extends Component {
       productContent.append(imgItem);
     });
 
-    detailInfoSection.appendChild(productContent);
+    detailInfoSection.append(DetailInfoIr, productInfo, productContent);
     return detailInfoSection;
   }
 }

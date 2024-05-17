@@ -1,12 +1,10 @@
-export default class Ir {
-  constructor({ tag, text }) {
-    this.tag = tag;
-    this.text = text;
-  }
-  createElement() {
-    const element = document.createElement(this.tag);
+import { Component } from "../core/index.js";
+
+export default class Ir extends Component {
+  render() {
+    const element = document.createElement(this.props.tag);
     element.setAttribute("class", "ir");
-    element.innerText = this.text;
+    element.innerText = this.props.text;
     return element;
   }
 }
